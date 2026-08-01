@@ -1,0 +1,8 @@
+setup.py
+multiverse_ai/__init__.py
+multiverse_ai/provider.py
+multiverse_ai.egg-info/PKG-INFO
+multiverse_ai.egg-info/SOURCES.txt
+multiverse_ai.egg-info/dependency_links.txt
+multiverse_ai.egg-info/requires.txt
+multiverse_ai.egg-info/top_level.txt
