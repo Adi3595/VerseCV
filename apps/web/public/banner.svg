@@ -1,0 +1,42 @@
+<svg width="800" height="200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Bitcount+Prop+Single&amp;display=swap');
+      
+      .bg { fill: #050814; }
+      
+      .title {
+        font-family: 'Bitcount Prop Single', sans-serif;
+        font-size: 80px;
+        fill: #ffffff;
+        text-anchor: middle;
+        animation: glow 3s ease-in-out infinite alternate;
+      }
+      
+      .subtitle {
+        font-family: sans-serif;
+        font-size: 20px;
+        fill: #a8dadc;
+        text-anchor: middle;
+        letter-spacing: 4px;
+        animation: fade 4s infinite;
+      }
+
+      @keyframes glow {
+        0% { filter: drop-shadow(0 0 5px #e63946); }
+        50% { filter: drop-shadow(0 0 20px #e63946) drop-shadow(0 0 30px #457b9d); }
+        100% { filter: drop-shadow(0 0 5px #e63946); }
+      }
+
+      @keyframes fade {
+        0%, 100% { opacity: 0.6; }
+        50% { opacity: 1; }
+      }
+    </style>
+  </defs>
+  
+  <rect width="100%" height="100%" class="bg" rx="15" ry="15" />
+  
+  <text x="400" y="110" class="title">VerseCV</text>
+  <text x="400" y="150" class="subtitle">YOUR CAREER ACROSS ALTERNATE REALITIES</text>
+</svg>
