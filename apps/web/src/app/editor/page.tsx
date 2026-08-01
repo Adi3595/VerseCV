@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -89,6 +89,15 @@ function EditorContent() {
   const theme = transformed.theme || fallbackTheme;
   const accent = transformed.accent || fallbackAccent;
 
+  const handleExport = () => {
+    window.print();
+  };
+
+  const handleShare = () => {
+    navigator.clipboard.writeText(window.location.href);
+    alert("Timeline coordinates copied to clipboard!");
+  };
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Top Navigation */}
@@ -111,11 +120,11 @@ function EditorContent() {
            </span>
         </div>
 
-        <div className="flex gap-3">
-          <button className="p-2 text-white/70 hover:text-white bg-white/5 hover:bg-white/10 rounded-xl transition-all">
+        <div className="flex gap-3 no-print">
+          <button onClick={handleShare} className="p-2 text-white/70 hover:text-white bg-white/5 hover:bg-white/10 rounded-xl transition-all">
             <Share2 className="w-4 h-4" />
           </button>
-          <button className="flex items-center gap-2 px-4 py-2 bg-accent text-accent-foreground font-semibold rounded-xl hover:bg-accent/90 transition-all">
+          <button onClick={handleExport} className="flex items-center gap-2 px-4 py-2 bg-accent text-accent-foreground font-semibold rounded-xl hover:bg-accent/90 transition-all">
             <Download className="w-4 h-4" />
             <span>Export</span>
           </button>
@@ -142,10 +151,10 @@ function EditorContent() {
         </AnimatePresence>
 
         {/* Split Screen Container */}
-        <div className="flex w-full p-6 gap-6 h-[calc(100vh-64px)] overflow-hidden">
+        <div className="flex w-full p-6 gap-6 h-full overflow-hidden">
           
           {/* Left: Original Resume */}
-          <div className="w-1/2 h-full flex flex-col bg-white/5 border border-white/10 rounded-2xl overflow-hidden shadow-2xl relative">
+          <div className="w-1/2 h-full flex flex-col bg-white/5 border border-white/10 rounded-2xl overflow-hidden shadow-2xl relative no-print">
             <div className="bg-white/5 py-3 px-6 border-b border-white/10 text-xs font-semibold text-white/50 tracking-widest uppercase flex items-center justify-between">
               <span>Core Identity</span>
               <span className="w-2 h-2 rounded-full bg-green-500" />
@@ -178,8 +187,8 @@ function EditorContent() {
           </div>
 
           {/* Right: Generated Resume */}
-          <div className="w-1/2 h-full flex flex-col bg-white/5 border border-white/10 rounded-2xl overflow-hidden shadow-2xl relative">
-             <div className="bg-white/5 py-3 px-6 border-b border-white/10 text-xs font-semibold text-white/50 tracking-widest uppercase flex items-center justify-between">
+          <div className="w-1/2 h-full flex flex-col bg-white/5 border border-white/10 rounded-2xl overflow-hidden shadow-2xl relative print-full-width">
+             <div className="bg-white/5 py-3 px-6 border-b border-white/10 text-xs font-semibold text-white/50 tracking-widest uppercase flex items-center justify-between no-print">
               <span>{universeName} Reality</span>
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
             </div>

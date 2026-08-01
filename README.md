@@ -103,7 +103,7 @@ Create a `.env` file in the root directory. You will need your OpenRouter API ke
 ```env
 # AI Provider
 OPENROUTER_API_KEY=your_openrouter_api_key_here
-OPENROUTER_TEXT_MODEL=google/gemini-2.5-flash-api
+OPENROUTER_TEXT_MODEL=google/gemini-2.5-flash
 
 # Authentication (Better Auth config)
 BETTER_AUTH_SECRET=generate_a_random_secret_string
