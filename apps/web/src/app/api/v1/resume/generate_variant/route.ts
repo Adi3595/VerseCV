@@ -26,6 +26,7 @@ const extractStructuredData = async (text: string) => {
     },
     body: JSON.stringify({
       model: MODEL,
+      max_tokens: 4000,
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: prompt }
@@ -62,6 +63,7 @@ const transformResume = async (parsedData: any, universe: string) => {
     },
     body: JSON.stringify({
       model: MODEL,
+      max_tokens: 4000,
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: prompt }
