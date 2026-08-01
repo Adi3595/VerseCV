@@ -80,11 +80,15 @@ function EditorContent() {
   const origRole = original.personal_info?.role || original.role || "Professional";
   const origExp = original.experience || [];
   const origSkills = original.skills || [];
+  const origEdu = original.education || [];
+  const origProj = original.projects || [];
 
   const transName = transformed.personal_info?.name || transformed.name || origName;
   const transRole = transformed.personal_info?.role || transformed.role || origRole;
   const transExp = transformed.experience || [];
   const transSkills = transformed.skills || [];
+  const transEdu = transformed.education || [];
+  const transProj = transformed.projects || [];
   
   const theme = transformed.theme || fallbackTheme;
   const accent = transformed.accent || fallbackAccent;
@@ -183,6 +187,37 @@ function EditorContent() {
                   <span key={i} className="px-4 py-2 bg-gray-100 border border-gray-200 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors cursor-default shadow-sm">{s}</span>
                 ))}
               </div>
+
+              {origEdu.length > 0 && (
+                <>
+                  <h3 className="text-sm font-outfit font-bold uppercase tracking-widest text-gray-400 mt-10 mb-6">Education</h3>
+                  <div className="space-y-4">
+                    {origEdu.map((edu: any, i: number) => (
+                      <div key={i} className="p-4 -mx-4 rounded-xl hover:bg-gray-50 transition-colors">
+                        <div className="flex justify-between items-baseline mb-1">
+                          <h4 className="font-outfit text-lg font-bold">{edu.degree}</h4>
+                          <span className="text-sm text-gray-500 font-mono tracking-wider">{edu.year}</span>
+                        </div>
+                        <div className="text-gray-700">{edu.institution}</div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {origProj.length > 0 && (
+                <>
+                  <h3 className="text-sm font-outfit font-bold uppercase tracking-widest text-gray-400 mt-10 mb-6">Projects</h3>
+                  <div className="space-y-4">
+                    {origProj.map((proj: any, i: number) => (
+                      <div key={i} className="p-4 -mx-4 rounded-xl hover:bg-gray-50 transition-colors">
+                        <h4 className="font-outfit text-lg font-bold mb-1">{proj.name}</h4>
+                        <p className="text-gray-600 text-sm leading-relaxed">{proj.description}</p>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
           </div>
 
@@ -254,6 +289,57 @@ function EditorContent() {
                     >{s}</motion.span>
                   ))}
                 </div>
+
+                {transEdu.length > 0 && (
+                  <>
+                    <motion.h3 
+                      layoutId="edu-title" 
+                      variants={{ hidden: { y: 20, opacity: 0 }, visible: { y: 0, opacity: 1 } }}
+                      className="text-sm font-outfit font-bold uppercase tracking-widest opacity-50 mt-10 mb-6"
+                    >Academy</motion.h3>
+                    <div className="space-y-4">
+                      {transEdu.map((edu: any, i: number) => (
+                        <motion.div 
+                          layoutId={`edu-${i}`} 
+                          key={i}
+                          variants={{ hidden: { x: -20, opacity: 0 }, visible: { x: 0, opacity: 1 } }}
+                          whileHover={{ scale: 1.02, x: 10 }}
+                          className="p-4 rounded-xl hover:bg-white/5 transition-all cursor-default border border-transparent hover:border-white/10"
+                        >
+                          <div className="flex justify-between items-baseline mb-1">
+                            <h4 className="font-outfit text-lg font-bold">{edu.degree}</h4>
+                            <span className="text-sm opacity-60 font-mono tracking-wider">{edu.year}</span>
+                          </div>
+                          <div className="opacity-80 text-accent">{edu.institution}</div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </>
+                )}
+
+                {transProj.length > 0 && (
+                  <>
+                    <motion.h3 
+                      layoutId="proj-title" 
+                      variants={{ hidden: { y: 20, opacity: 0 }, visible: { y: 0, opacity: 1 } }}
+                      className="text-sm font-outfit font-bold uppercase tracking-widest opacity-50 mt-10 mb-6"
+                    >Missions</motion.h3>
+                    <div className="space-y-4">
+                      {transProj.map((proj: any, i: number) => (
+                        <motion.div 
+                          layoutId={`proj-${i}`} 
+                          key={i}
+                          variants={{ hidden: { x: -20, opacity: 0 }, visible: { x: 0, opacity: 1 } }}
+                          whileHover={{ scale: 1.02, x: 10 }}
+                          className="p-4 rounded-xl hover:bg-white/5 transition-all cursor-default border border-transparent hover:border-white/10"
+                        >
+                          <h4 className="font-outfit text-lg font-bold mb-1">{proj.name}</h4>
+                          <p className="text-sm leading-relaxed opacity-90">{proj.description}</p>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </>
+                )}
               </motion.div>
             </div>
           </div>
