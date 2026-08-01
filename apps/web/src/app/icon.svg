@@ -1,30 +1,58 @@
 <svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <!-- Prime Reality Gradient -->
+    <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#a855f7" />
       <stop offset="100%" stop-color="#0ea5e9" />
     </linearGradient>
+    <!-- Alternate Reality 1 Gradient -->
+    <linearGradient id="altGrad1" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f43f5e" />
+      <stop offset="100%" stop-color="#eab308" />
+    </linearGradient>
+    <!-- Alternate Reality 2 Gradient -->
+    <linearGradient id="altGrad2" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+    
     <filter id="neon-glow" x="-50%" y="-50%" width="200%" height="200%">
       <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur1" />
-      <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur2" />
-      <feGaussianBlur in="SourceGraphic" stdDeviation="15" result="blur3" />
+      <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blur2" />
       <feMerge>
-        <feMergeNode in="blur3" />
         <feMergeNode in="blur2" />
         <feMergeNode in="blur1" />
         <feMergeNode in="SourceGraphic" />
       </feMerge>
     </filter>
   </defs>
-  <!-- Background transparent -->
-  <rect width="256" height="256" fill="transparent" />
   
+  <rect width="256" height="256" fill="transparent" />
+
+  <!-- Dimensional Portals / Orbits -->
+  <circle cx="128" cy="128" r="85" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2" stroke-dasharray="10 10"/>
+  <circle cx="128" cy="128" r="105" fill="none" stroke="rgba(14,165,233,0.3)" stroke-width="1" stroke-dasharray="30 5"/>
+  <ellipse cx="128" cy="128" rx="120" ry="40" fill="none" stroke="rgba(168,85,247,0.4)" stroke-width="2" transform="rotate(35 128 128)" />
+  <ellipse cx="128" cy="128" rx="120" ry="40" fill="none" stroke="rgba(244,63,94,0.3)" stroke-width="2" transform="rotate(-35 128 128)" />
+
   <g filter="url(#neon-glow)">
-    <!-- Left Wing -->
-    <path d="M50,50 L118,200 L138,200 L80,50 Z" fill="url(#grad)" />
-    <!-- Right Wing -->
-    <path d="M206,50 L138,200 L118,200 L176,50 Z" fill="url(#grad)" opacity="0.8" />
-    <!-- Sci-fi horizontal cuts -->
-    <path d="M40,110 L216,110 L216,120 L40,120 Z" fill="#050814" opacity="0.6"/>
+    <!-- Reality 3 (Echo) -->
+    <g transform="translate(18, -12) scale(0.85) rotate(5 128 128)" opacity="0.5">
+      <path d="M50,50 L128,210 L206,50 L170,50 L128,140 L86,50 Z" fill="url(#altGrad1)" />
+    </g>
+    <!-- Reality 2 (Echo) -->
+    <g transform="translate(-18, 12) scale(0.85) rotate(-5 128 128)" opacity="0.5">
+      <path d="M50,50 L128,210 L206,50 L170,50 L128,140 L86,50 Z" fill="url(#altGrad2)" />
+    </g>
+    
+    <!-- Prime Reality (Main V) -->
+    <g>
+      <!-- Left Wing -->
+      <path d="M40,50 L118,200 L138,200 L70,50 Z" fill="url(#primaryGrad)" />
+      <!-- Right Wing -->
+      <path d="M216,50 L138,200 L118,200 L186,50 Z" fill="url(#primaryGrad)" opacity="0.9" />
+      <!-- Disruption Cut -->
+      <path d="M20,120 L236,120 L236,128 L20,128 Z" fill="#050814" opacity="0.9"/>
+    </g>
   </g>
 </svg>
