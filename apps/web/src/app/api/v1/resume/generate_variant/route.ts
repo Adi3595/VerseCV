@@ -3,7 +3,8 @@ const pdfParse = require("pdf-parse");
 
 // OpenRouter configurations
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
-const MODEL = process.env.OPENROUTER_TEXT_MODEL || "google/gemini-2.5-flash-api";
+const rawModel = process.env.OPENROUTER_TEXT_MODEL || "google/gemini-2.5-flash";
+const MODEL = rawModel.endsWith("-api") ? rawModel.replace("-api", "") : rawModel;
 
 const extractStructuredData = async (text: string) => {
   const schema = {
@@ -32,7 +33,11 @@ const extractStructuredData = async (text: string) => {
     })
   });
 
-  if (!res.ok) throw new Error("Failed to extract data");
+  if (!res.ok) {
+    const errorText = await res.text();
+    console.error("OpenRouter Extraction Error:", errorText);
+    throw new Error("Failed to extract data: " + errorText);
+  }
   const data = await res.json();
   const rawContent = data.choices[0].message.content;
   
@@ -64,7 +69,11 @@ const transformResume = async (parsedData: any, universe: string) => {
     })
   });
 
-  if (!res.ok) throw new Error("Failed to transform data");
+  if (!res.ok) {
+    const errorText = await res.text();
+    console.error("OpenRouter Transform Error:", errorText);
+    throw new Error("Failed to transform data: " + errorText);
+  }
   const data = await res.json();
   const rawContent = data.choices[0].message.content;
   
