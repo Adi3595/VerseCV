@@ -150,27 +150,27 @@ function EditorContent() {
               <span className="w-2 h-2 rounded-full bg-green-500" />
             </div>
             <div className="flex-1 overflow-y-auto p-12 bg-white text-black">
-              <h1 className="text-4xl font-serif font-bold mb-1">{origName}</h1>
-              <h2 className="text-xl text-gray-600 mb-8 pb-4 border-b">{origRole}</h2>
+              <h1 className="text-5xl font-outfit font-bold mb-2">{origName}</h1>
+              <h2 className="text-2xl font-outfit text-gray-600 mb-8 pb-4 border-b">{origRole}</h2>
               
-              <h3 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-4">Experience</h3>
-              <div className="space-y-6 mb-8">
+              <h3 className="text-sm font-outfit font-bold uppercase tracking-widest text-gray-400 mb-6">Experience</h3>
+              <div className="space-y-6 mb-10">
                 {origExp.map((exp: any, i: number) => (
-                  <div key={i}>
+                  <div key={i} className="p-4 -mx-4 rounded-xl hover:bg-gray-50 transition-colors">
                     <div className="flex justify-between items-baseline mb-1">
-                      <h4 className="font-bold">{exp.position || exp.role}</h4>
-                      <span className="text-sm text-gray-500">{exp.years || exp.duration}</span>
+                      <h4 className="font-outfit text-xl font-bold">{exp.position || exp.role}</h4>
+                      <span className="text-sm text-gray-500 font-mono tracking-wider">{exp.years || exp.duration}</span>
                     </div>
-                    <div className="text-gray-700 italic mb-2">{exp.company}</div>
+                    <div className="text-gray-700 italic mb-3">{exp.company}</div>
                     <p className="text-gray-600 text-sm leading-relaxed">{exp.desc || exp.description}</p>
                   </div>
                 ))}
               </div>
 
-              <h3 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-4">Skills</h3>
-              <div className="flex flex-wrap gap-2">
+              <h3 className="text-sm font-outfit font-bold uppercase tracking-widest text-gray-400 mb-6">Skills</h3>
+              <div className="flex flex-wrap gap-3">
                 {origSkills.map((s: string, i: number) => (
-                  <span key={i} className="px-3 py-1 bg-gray-100 text-gray-700 rounded-md text-sm">{s}</span>
+                  <span key={i} className="px-4 py-2 bg-gray-100 border border-gray-200 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors cursor-default shadow-sm">{s}</span>
                 ))}
               </div>
             </div>
@@ -184,28 +184,64 @@ function EditorContent() {
             </div>
             
             <div className={`flex-1 overflow-y-auto p-12 transition-colors duration-1000 ${theme}`}>
-              <motion.div layout>
-                <motion.h1 layoutId="name" className={`text-4xl font-bold mb-1 ${accent}`}>{transName}</motion.h1>
-                <motion.h2 layoutId="role" className="text-xl opacity-80 mb-8 pb-4 border-b border-current/20">{transRole}</motion.h2>
+              <motion.div 
+                layout 
+                initial="hidden"
+                animate="visible"
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+                }}
+              >
+                <motion.h1 
+                  layoutId="name" 
+                  variants={{ hidden: { y: 20, opacity: 0 }, visible: { y: 0, opacity: 1 } }}
+                  className={`text-5xl font-outfit font-bold mb-2 ${accent} drop-shadow-lg`}
+                >{transName}</motion.h1>
+                <motion.h2 
+                  layoutId="role" 
+                  variants={{ hidden: { y: 20, opacity: 0 }, visible: { y: 0, opacity: 1 } }}
+                  className="text-2xl font-outfit opacity-80 mb-8 pb-4 border-b border-current/20"
+                >{transRole}</motion.h2>
                 
-                <motion.h3 layoutId="exp-title" className="text-sm font-bold uppercase tracking-widest opacity-50 mb-4">Chronicles</motion.h3>
-                <div className="space-y-6 mb-8">
+                <motion.h3 
+                  layoutId="exp-title" 
+                  variants={{ hidden: { y: 20, opacity: 0 }, visible: { y: 0, opacity: 1 } }}
+                  className="text-sm font-outfit font-bold uppercase tracking-widest opacity-50 mb-6"
+                >Chronicles</motion.h3>
+                <div className="space-y-6 mb-10">
                   {transExp.map((exp: any, i: number) => (
-                    <motion.div layoutId={`exp-${i}`} key={i}>
+                    <motion.div 
+                      layoutId={`exp-${i}`} 
+                      key={i}
+                      variants={{ hidden: { x: -20, opacity: 0 }, visible: { x: 0, opacity: 1 } }}
+                      whileHover={{ scale: 1.02, x: 10 }}
+                      className="p-4 rounded-xl hover:bg-white/5 transition-all cursor-default border border-transparent hover:border-white/10"
+                    >
                       <div className="flex justify-between items-baseline mb-1">
-                        <h4 className="font-bold">{exp.position || exp.role}</h4>
-                        <span className="text-sm opacity-60">{exp.years || exp.duration}</span>
+                        <h4 className="font-outfit text-xl font-bold">{exp.position || exp.role}</h4>
+                        <span className="text-sm opacity-60 font-mono tracking-wider">{exp.years || exp.duration}</span>
                       </div>
-                      <div className="italic opacity-80 mb-2">{exp.company}</div>
+                      <div className="italic opacity-80 mb-3 text-accent">{exp.company}</div>
                       <p className="text-sm leading-relaxed opacity-90">{exp.desc || exp.description}</p>
                     </motion.div>
                   ))}
                 </div>
 
-                <motion.h3 layoutId="skills-title" className="text-sm font-bold uppercase tracking-widest opacity-50 mb-4">Arsenals</motion.h3>
-                <div className="flex flex-wrap gap-2">
+                <motion.h3 
+                  layoutId="skills-title" 
+                  variants={{ hidden: { y: 20, opacity: 0 }, visible: { y: 0, opacity: 1 } }}
+                  className="text-sm font-outfit font-bold uppercase tracking-widest opacity-50 mb-6"
+                >Arsenals</motion.h3>
+                <div className="flex flex-wrap gap-3">
                   {transSkills.map((s: string, i: number) => (
-                    <motion.span layoutId={`skill-${i}`} key={i} className="px-3 py-1 border border-current/20 rounded-md text-sm backdrop-blur-md bg-white/5">{s}</motion.span>
+                    <motion.span 
+                      layoutId={`skill-${i}`} 
+                      key={i} 
+                      variants={{ hidden: { scale: 0.8, opacity: 0 }, visible: { scale: 1, opacity: 1 } }}
+                      whileHover={{ scale: 1.1, rotate: [-2, 2, 0], backgroundColor: "rgba(255,255,255,0.1)" }}
+                      className="px-4 py-2 border border-current/20 rounded-lg text-sm font-medium backdrop-blur-md bg-white/5 shadow-lg cursor-pointer transition-colors"
+                    >{s}</motion.span>
                   ))}
                 </div>
               </motion.div>
