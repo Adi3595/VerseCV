@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -40,7 +40,7 @@ export default function DashboardPage() {
       <header className="sticky top-6 z-50 w-full px-6 flex justify-center">
         <div className="w-full max-w-5xl flex items-center justify-between px-6 py-4 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_0_30px_rgba(255,255,255,0.05)]">
           <div className="flex items-center gap-3">
-            <Image src="/logo.png" alt="VerseCV" width={28} height={28} className="rounded-md" />
+            <Image src="/logo.svg" alt="VerseCV" width={28} height={28} className="rounded-md" />
             <span className="font-outfit font-bold tracking-wide">VerseCV</span>
           </div>
           

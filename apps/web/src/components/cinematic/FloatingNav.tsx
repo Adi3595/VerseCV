@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { useState } from "react";
@@ -42,7 +42,7 @@ export default function FloatingNav() {
     >
       <div className="flex items-center justify-between px-6 py-3 rounded-full liquid-glass border border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] text-sm font-medium tracking-wide">
         <Link href="/" className="flex items-center gap-2 group">
-          <Image src="/logo.png" alt="VerseCV" width={24} height={24} className="group-hover:scale-110 transition-transform rounded-sm" />
+          <Image src="/logo.svg" alt="VerseCV" width={24} height={24} className="group-hover:scale-110 transition-transform rounded-sm" />
           <span className="hidden sm:inline">VerseCV</span>
         </Link>
         

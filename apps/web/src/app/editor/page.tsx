@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -98,7 +98,7 @@ function EditorContent() {
             <ArrowLeft className="w-4 h-4" />
           </Link>
           <div className="flex items-center gap-3">
-            <Image src="/logo.png" alt="VerseCV" width={28} height={28} className="rounded-md" />
+            <Image src="/logo.svg" alt="VerseCV" width={28} height={28} className="rounded-md" />
             <span className="font-outfit font-bold tracking-wide text-lg">VerseCV</span>
           </div>
         </div>

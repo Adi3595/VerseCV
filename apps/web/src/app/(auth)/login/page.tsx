@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
@@ -70,7 +70,7 @@ export default function LoginPage() {
         className="w-full max-w-md bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-3xl shadow-2xl"
       >
         <div className="text-center mb-8 flex flex-col items-center">
-          <Image src="/logo.png" alt="VerseCV" width={48} height={48} className="mb-6 rounded-xl shadow-lg" />
+          <Image src="/logo.svg" alt="VerseCV" width={48} height={48} className="mb-6 rounded-xl shadow-lg" />
           <h2 className="text-3xl font-outfit font-bold mb-2">Welcome Back</h2>
           <p className="text-white/60">Enter VerseCV.</p>
         </div>
@@ -106,7 +106,7 @@ export default function LoginPage() {
                 {...register("password")}
                 type="password"
                 className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
-                placeholder="••••••••"
+                placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
               />
             </div>
             {errors.password && <p className="text-primary text-sm pl-1">{errors.password.message}</p>}

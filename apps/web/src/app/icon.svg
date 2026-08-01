@@ -1,0 +1,30 @@
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a855f7" />
+      <stop offset="100%" stop-color="#0ea5e9" />
+    </linearGradient>
+    <filter id="neon-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur1" />
+      <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur2" />
+      <feGaussianBlur in="SourceGraphic" stdDeviation="15" result="blur3" />
+      <feMerge>
+        <feMergeNode in="blur3" />
+        <feMergeNode in="blur2" />
+        <feMergeNode in="blur1" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+  <!-- Background transparent -->
+  <rect width="256" height="256" fill="transparent" />
+  
+  <g filter="url(#neon-glow)">
+    <!-- Left Wing -->
+    <path d="M50,50 L118,200 L138,200 L80,50 Z" fill="url(#grad)" />
+    <!-- Right Wing -->
+    <path d="M206,50 L138,200 L118,200 L176,50 Z" fill="url(#grad)" opacity="0.8" />
+    <!-- Sci-fi horizontal cuts -->
+    <path d="M40,110 L216,110 L216,120 L40,120 Z" fill="#050814" opacity="0.6"/>
+  </g>
+</svg>
