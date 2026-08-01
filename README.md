@@ -6,7 +6,7 @@
 
 <br/>
 
-## 🌌 The VerseCV Experience
+<img src="./apps/web/public/heading-experience.svg" alt="The VerseCV Experience" />
 
 VerseCV is not just a resume parser—it's an **AI-powered cinematic engine**. We take your mundane professional history and project it into infinite alternate realities using OpenRouter AI.
 
@@ -34,7 +34,7 @@ VerseCV is not just a resume parser—it's an **AI-powered cinematic engine**. W
 
 <br/>
 
-## 🚀 Initialize Your Reality (Getting Started)
+<img src="./apps/web/public/heading-init.svg" alt="Initialize Your Reality" />
 
 Ready to boot up the engine? Follow these steps to spin up the local development environment.
 

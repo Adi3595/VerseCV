@@ -1,0 +1,34 @@
+<svg width="800" height="80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Bitcount+Prop+Single&amp;display=swap');
+      
+      .heading {
+        font-family: 'Bitcount Prop Single', sans-serif;
+        font-size: 32px;
+        fill: #ffffff;
+        text-anchor: start;
+        dominant-baseline: middle;
+        animation: subtle-pulse 3s infinite alternate;
+      }
+      
+      .accent {
+        fill: #a8dadc;
+      }
+
+      @keyframes subtle-pulse {
+        0% { filter: drop-shadow(0 0 2px #457b9d); }
+        100% { filter: drop-shadow(0 0 8px #a8dadc); }
+      }
+      
+      .line {
+        stroke: rgba(255, 255, 255, 0.2);
+        stroke-width: 2;
+        stroke-dasharray: 4 4;
+      }
+    </style>
+  </defs>
+  
+  <text x="0" y="40" class="heading"><tspan class="accent">✦</tspan> THE VERSECV EXPERIENCE</text>
+  <line x1="0" y1="70" x2="800" y2="70" class="line" />
+</svg>
