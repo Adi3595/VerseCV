@@ -4,6 +4,7 @@ import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 import { useSession } from "@/lib/auth/client";
 import { Sparkles, LogIn, LayoutDashboard, Fingerprint, User } from "lucide-react";
 
@@ -40,8 +41,8 @@ export default function FloatingNav() {
       className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] w-full max-w-md px-4"
     >
       <div className="flex items-center justify-between px-6 py-3 rounded-full liquid-glass border border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.05)] text-sm font-medium tracking-wide">
-        <Link href={session ? "/dashboard" : "/"} className="flex items-center gap-2 text-white/80 hover:text-white transition-colors group">
-          <Sparkles className="w-4 h-4 text-accent group-hover:scale-110 transition-transform" />
+        <Link href="/" className="flex items-center gap-2 group">
+          <Image src="/logo.png" alt="VerseCV" width={24} height={24} className="group-hover:scale-110 transition-transform rounded-sm" />
           <span className="hidden sm:inline">VerseCV</span>
         </Link>
         

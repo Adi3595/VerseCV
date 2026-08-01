@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Download, Share2, Sparkles, RefreshCw, ArrowLeft, AlertTriangle, Fingerprint } from "lucide-react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 
 interface ResumeData {
   personal_info?: { name?: string; email?: string; phone?: string; role?: string };
@@ -96,9 +97,9 @@ function EditorContent() {
           <Link href="/dashboard" className="p-2 text-white/50 hover:text-white bg-white/5 hover:bg-white/10 rounded-xl transition-all mr-2">
             <ArrowLeft className="w-4 h-4" />
           </Link>
-          <div className="flex items-center gap-2">
-            <Fingerprint className="w-6 h-6 text-emerald-400" />
-            <span className="font-outfit font-bold tracking-wide">VerseCV</span>
+          <div className="flex items-center gap-3">
+            <Image src="/logo.png" alt="VerseCV" width={28} height={28} className="rounded-md" />
+            <span className="font-outfit font-bold tracking-wide text-lg">VerseCV</span>
           </div>
         </div>
         

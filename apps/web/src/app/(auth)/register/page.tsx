@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
+import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import Link from "next/link";
@@ -73,7 +74,8 @@ export default function RegisterPage() {
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-md bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-3xl shadow-2xl"
       >
-        <div className="text-center mb-8">
+        <div className="text-center mb-8 flex flex-col items-center">
+          <Image src="/logo.png" alt="VerseCV" width={48} height={48} className="mb-6 rounded-xl shadow-lg" />
           <h2 className="text-3xl font-outfit font-bold mb-2">Join VerseCV</h2>
           <p className="text-white/60">Your alternate careers await.</p>
         </div>
