@@ -8,10 +8,7 @@ from sqlalchemy import text
 # We will use the database directly.
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../../packages/database")))
 
-try:
-    from multiverse_database.db import get_db
-except ImportError:
-    pass
+from multiverse_database.db import get_db
 
 class AuthUser:
     def __init__(self, id, email, name):
