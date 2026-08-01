@@ -13,6 +13,7 @@ interface ResumeData {
   education?: any[];
   skills?: string[];
   projects?: any[];
+  achievements?: any[];
   theme?: string;
   accent?: string;
   name?: string;
