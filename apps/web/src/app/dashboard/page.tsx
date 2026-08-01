@@ -1,10 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
-import Image from "next/image";
-import { Clock, Star, Settings, ExternalLink, Sparkles, LogOut, LayoutGrid, Fingerprint } from "lucide-react";
-import { useSession, signOut } from "@/lib/auth/client";
+import { Clock } from "lucide-react";
+import { useSession } from "@/lib/auth/client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import CoreIdentityUpload from "@/components/dashboard/CoreIdentityUpload";
@@ -38,10 +36,7 @@ export default function DashboardPage() {
     }
   }, [session]);
 
-  const handleLogout = async () => {
-    await signOut();
-    router.push("/login");
-  };
+  const displayName = session?.user?.name || (session?.user?.email ? session.user.email.split('@')[0] : "Traveler");
 
   const openHistoryItem = (item: any) => {
     const data = {
@@ -53,61 +48,33 @@ export default function DashboardPage() {
     router.push(`/editor?universe=${encodeURIComponent(item.universe)}`);
   };
 
-  const displayName = session?.user?.name || (session?.user?.email ? session.user.email.split('@')[0] : "Traveler");
+  const toggleFavorite = async (e: React.MouseEvent, item: any) => {
+    e.stopPropagation(); // prevent opening the item
+    
+    // Optimistic UI update
+    setHistory(prev => prev.map(h => h.id === item.id ? { ...h, isFavorite: !h.isFavorite } : h));
+
+    try {
+      await fetch(`/api/v1/resume/history/${item.id}/favorite`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isFavorite: !item.isFavorite })
+      });
+    } catch (err) {
+      console.error("Failed to toggle favorite:", err);
+      // Revert on error
+      setHistory(prev => prev.map(h => h.id === item.id ? { ...h, isFavorite: item.isFavorite } : h));
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col relative z-10">
-      
-      {/* Floating Header */}
-      <header className="sticky top-6 z-50 w-full px-6 flex justify-center">
-        <div className="w-full max-w-5xl flex items-center justify-between px-6 py-4 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_0_30px_rgba(255,255,255,0.05)]">
-          <div className="flex items-center gap-3">
-            <Image src="/logo.svg" alt="VerseCV" width={28} height={28} className="rounded-md" />
-            <span className="font-outfit font-bold tracking-wide">VerseCV</span>
-          </div>
-          
-          <nav className="hidden md:flex items-center gap-6">
-            <Link href="/dashboard" className="text-white font-medium flex items-center gap-2">
-              <LayoutGrid className="w-4 h-4 text-primary" />
-              Manifestations
-            </Link>
-            <Link href="#" className="text-white/60 hover:text-white transition-colors flex items-center gap-2">
-              <Star className="w-4 h-4" />
-              Favorites
-            </Link>
-            <Link href="#" className="text-white/60 hover:text-white transition-colors flex items-center gap-2">
-              <Settings className="w-4 h-4" />
-              Settings
-            </Link>
-          </nav>
-
-          <div className="flex items-center gap-4">
-            <div className="hidden sm:flex items-center gap-2 text-sm text-white/70">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold">
-                {displayName.charAt(0).toUpperCase()}
-              </div>
-              <span>{displayName}</span>
-            </div>
-            <button 
-              onClick={handleLogout} 
-              className="p-2 bg-white/5 hover:bg-white/10 rounded-full text-white/70 hover:text-white transition-all border border-white/10"
-              title="Logout"
-            >
-              <LogOut className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="flex-1 w-full max-w-5xl mx-auto px-6 py-12 flex flex-col">
-        
-        {/* Welcome Section */}
-        <motion.header 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-16 text-center mt-8"
-        >
+    <>
+      {/* Welcome Section */}
+      <motion.header 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-16 text-center mt-8"
+      >
           <h1 className="text-5xl md:text-6xl font-outfit font-bold mb-4 capitalize bg-clip-text text-transparent bg-gradient-to-r from-white to-white/50">
             Welcome, {displayName}.
           </h1>
@@ -167,7 +134,19 @@ export default function DashboardPage() {
                           <span className={`text-xs font-semibold px-2 py-1 bg-white/5 rounded border border-white/10 uppercase tracking-wider text-green-400`}>
                             archived
                           </span>
-                          <ExternalLink className="w-4 h-4 text-white/30 group-hover:text-white transition-colors" />
+                          <div className="flex items-center gap-3">
+                            <button 
+                              onClick={(e) => toggleFavorite(e, gen)}
+                              className="text-white/30 hover:text-yellow-400 transition-colors z-10 p-1"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill={gen.isFavorite ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={gen.isFavorite ? "text-yellow-400" : ""}>
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                              </svg>
+                            </button>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/30 group-hover:text-white transition-colors">
+                              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                          </div>
                         </div>
                         <h3 className="text-2xl font-outfit font-bold mb-2">{gen.universe}</h3>
                         <p className="text-sm text-white/50">{new Date(gen.createdAt).toLocaleDateString()}</p>
@@ -175,7 +154,17 @@ export default function DashboardPage() {
                       
                       <div className="mt-6 pt-4 border-t border-white/10 flex justify-end">
                         <span className="text-sm text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
-                          Revisit Reality <Sparkles className="w-3 h-3" />
+                          Revisit Reality 
+                          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72Z"></path>
+                            <path d="m14 7 3 3"></path>
+                            <path d="M5 6v4"></path>
+                            <path d="M19 14v4"></path>
+                            <path d="M10 2v2"></path>
+                            <path d="M7 8H3"></path>
+                            <path d="M21 16h-4"></path>
+                            <path d="M11 3H9"></path>
+                          </svg>
                         </span>
                       </div>
                     </div>
@@ -185,7 +174,6 @@ export default function DashboardPage() {
             )}
           </div>
         </section>
-      </main>
-    </div>
+      </>
   );
 }

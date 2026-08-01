@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: multiverse-api
+    env: docker
+    region: ohio
+    plan: free
+    # The build context must be the root directory so the Dockerfile can access the 'packages' directory
+    rootDir: .
+    dockerfilePath: apps/api/Dockerfile
+    envVars:
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: NEXT_PUBLIC_API_URL
+        sync: false
+      - key: CORS_ORIGINS
+        value: "https://your-vercel-domain.vercel.app"

@@ -4,9 +4,7 @@ import { auth } from "@/lib/auth/server";
 
 export async function GET(request: Request) {
   try {
-    const session = await auth.api.getSession({
-      headers: request.headers
-    });
+    const { data: session } = await auth.getSession();
     
     // For demo purposes, if auth fails, we can fallback to a fixed test user
     // or just return empty history. Let's return empty if no auth.
@@ -28,9 +26,7 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    const session = await auth.api.getSession({
-      headers: request.headers
-    });
+    const { data: session } = await auth.getSession();
 
     if (!session?.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

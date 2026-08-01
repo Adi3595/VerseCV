@@ -12,6 +12,7 @@ model ResumeHistory {
   originalData    Json
   transformedData Json
   universe        String
+  isFavorite      Boolean  @default(false)
   createdAt       DateTime @default(now())
 
   @@index([userId])

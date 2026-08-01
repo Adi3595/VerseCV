@@ -16,7 +16,6 @@ COPY packages/ ./packages/
 # Install dependencies
 RUN pip install --no-cache-dir -r apps/api/requirements.txt
 RUN pip install -e packages/database
-RUN pip install -e packages/auth
 RUN pip install -e packages/ai
 
 # Copy application code

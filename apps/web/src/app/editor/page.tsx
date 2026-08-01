@@ -97,7 +97,8 @@ function EditorContent() {
 
   const handleExport = async () => {
     // Dynamically import to avoid SSR issues
-    const html2pdf = (await import('html2pdf.js')).default;
+    const html2canvas = (await import('html2canvas-pro')).default;
+    const { jsPDF } = await import('jspdf');
     
     // Select the right column (generated resume)
     const element = document.getElementById("generated-resume");
@@ -110,17 +111,25 @@ function EditorContent() {
     clone.style.height = "max-content";
     clone.style.overflow = "visible";
     clone.style.padding = "40px";
+    clone.style.position = "absolute";
+    clone.style.top = "-9999px";
     clone.style.backgroundColor = getComputedStyle(element).backgroundColor; // Ensure bg matches theme
     
-    const opt = {
-      margin:       0,
-      filename:     `VerseCV_${universeName}_${transName}.pdf`,
-      image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2, useCORS: true, logging: false },
-      jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
-    };
+    document.body.appendChild(clone);
     
-    html2pdf().set(opt).from(clone).save();
+    try {
+      const canvas = await html2canvas(clone, { scale: 2, useCORS: true, logging: false });
+      const imgData = canvas.toDataURL('image/jpeg', 0.98);
+      
+      const pdf = new jsPDF({ unit: 'px', format: [canvas.width / 2, canvas.height / 2], orientation: 'portrait' });
+      pdf.addImage(imgData, 'JPEG', 0, 0, canvas.width / 2, canvas.height / 2);
+      pdf.save(`VerseCV_${universeName}_${transName}.pdf`);
+    } catch (err) {
+      console.error("PDF generation failed:", err);
+      alert("Failed to export reality as PDF.");
+    } finally {
+      document.body.removeChild(clone);
+    }
   };
 
   const handleShare = () => {
