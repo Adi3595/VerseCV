@@ -12,7 +12,8 @@ const extractStructuredData = async (text: string) => {
     experience: [{ company: "string", role: "string", duration: "string", description: "string" }],
     education: [{ institution: "string", degree: "string", year: "string" }],
     skills: ["string"],
-    projects: [{ name: "string", description: "string" }]
+    projects: [{ name: "string", description: "string" }],
+    achievements: ["string"]
   };
   
   const systemPrompt = `You are an expert data extractor. Always return valid JSON EXACTLY matching this schema with no markdown formatting: ${JSON.stringify(schema)}`;

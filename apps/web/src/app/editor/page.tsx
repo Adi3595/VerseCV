@@ -82,6 +82,7 @@ function EditorContent() {
   const origSkills = original.skills || [];
   const origEdu = original.education || [];
   const origProj = original.projects || [];
+  const origAchieve = original.achievements || [];
 
   const transName = transformed.personal_info?.name || transformed.name || origName;
   const transRole = transformed.personal_info?.role || transformed.role || origRole;
@@ -89,6 +90,7 @@ function EditorContent() {
   const transSkills = transformed.skills || [];
   const transEdu = transformed.education || [];
   const transProj = transformed.projects || [];
+  const transAchieve = transformed.achievements || [];
   
   const theme = transformed.theme || fallbackTheme;
   const accent = transformed.accent || fallbackAccent;
@@ -218,6 +220,17 @@ function EditorContent() {
                   </div>
                 </>
               )}
+
+              {origAchieve.length > 0 && (
+                <>
+                  <h3 className="text-sm font-outfit font-bold uppercase tracking-widest text-gray-400 mt-10 mb-6">Achievements</h3>
+                  <ul className="list-disc pl-5 space-y-2 text-gray-700 text-sm leading-relaxed">
+                    {origAchieve.map((achieve: string, i: number) => (
+                      <li key={i}>{achieve}</li>
+                    ))}
+                  </ul>
+                </>
+              )}
             </div>
           </div>
 
@@ -338,6 +351,27 @@ function EditorContent() {
                         </motion.div>
                       ))}
                     </div>
+                  </>
+                )}
+
+                {transAchieve.length > 0 && (
+                  <>
+                    <motion.h3 
+                      layoutId="achieve-title" 
+                      variants={{ hidden: { y: 20, opacity: 0 }, visible: { y: 0, opacity: 1 } }}
+                      className="text-sm font-outfit font-bold uppercase tracking-widest opacity-50 mt-10 mb-6"
+                    >Honors & Conquests</motion.h3>
+                    <ul className="list-disc pl-5 space-y-2 opacity-90 text-sm leading-relaxed">
+                      {transAchieve.map((achieve: string, i: number) => (
+                        <motion.li 
+                          layoutId={`achieve-${i}`} 
+                          key={i}
+                          variants={{ hidden: { x: -20, opacity: 0 }, visible: { x: 0, opacity: 1 } }}
+                        >
+                          {achieve}
+                        </motion.li>
+                      ))}
+                    </ul>
                   </>
                 )}
               </motion.div>
