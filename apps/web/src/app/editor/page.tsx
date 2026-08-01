@@ -95,8 +95,32 @@ function EditorContent() {
   const theme = transformed.theme || fallbackTheme;
   const accent = transformed.accent || fallbackAccent;
 
-  const handleExport = () => {
-    window.print();
+  const handleExport = async () => {
+    // Dynamically import to avoid SSR issues
+    const html2pdf = (await import('html2pdf.js')).default;
+    
+    // Select the right column (generated resume)
+    const element = document.getElementById("generated-resume");
+    if (!element) return;
+    
+    // Clone it to modify styles without affecting the UI
+    const clone = element.cloneNode(true) as HTMLElement;
+    // Set fixed width and remove scrollbars for perfect PDF layout
+    clone.style.width = "800px";
+    clone.style.height = "max-content";
+    clone.style.overflow = "visible";
+    clone.style.padding = "40px";
+    clone.style.backgroundColor = getComputedStyle(element).backgroundColor; // Ensure bg matches theme
+    
+    const opt = {
+      margin:       0,
+      filename:     `VerseCV_${universeName}_${transName}.pdf`,
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2, useCORS: true, logging: false },
+      jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+    
+    html2pdf().set(opt).from(clone).save();
   };
 
   const handleShare = () => {
@@ -239,9 +263,9 @@ function EditorContent() {
              <div className="bg-white/5 py-3 px-6 border-b border-white/10 text-xs font-semibold text-white/50 tracking-widest uppercase flex items-center justify-between no-print">
               <span>{universeName} Reality</span>
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            </div>
+             </div>
             
-            <div className={`flex-1 overflow-y-auto p-12 transition-colors duration-1000 ${theme}`}>
+            <div id="generated-resume" className={`flex-1 overflow-y-auto p-12 transition-colors duration-1000 ${theme}`}>
               <motion.div 
                 layout 
                 initial="hidden"

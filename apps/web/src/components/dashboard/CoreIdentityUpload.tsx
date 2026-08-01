@@ -65,6 +65,21 @@ export default function CoreIdentityUpload() {
       // Store in session storage so the editor can read it
       sessionStorage.setItem("multiverse_resume_data", JSON.stringify(data));
       
+      // Save to History Database silently
+      try {
+        await fetch("/api/v1/resume/history", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            originalData: data.original_resume,
+            transformedData: data.transformed_resume,
+            universe: data.universe
+          })
+        });
+      } catch (historyErr) {
+        console.error("Failed to save history:", historyErr);
+      }
+
       router.push(`/editor?universe=${encodeURIComponent(targetUniverse.trim())}`);
     } catch (err) {
       console.error("Failed to generate:", err);

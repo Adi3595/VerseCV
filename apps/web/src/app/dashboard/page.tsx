@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Clock, Star, Settings, ExternalLink, Sparkles, LogOut, LayoutGrid, Fingerprint } from "lucide-react";
 import { useSession, signOut } from "@/lib/auth/client";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import CoreIdentityUpload from "@/components/dashboard/CoreIdentityUpload";
 import LiquidGlassCard from "@/components/cinematic/LiquidGlassCard";
 
@@ -14,22 +14,44 @@ export default function DashboardPage() {
   const { data: session, isPending } = useSession();
   const router = useRouter();
 
+  const [history, setHistory] = useState<any[]>([]);
+  const [loadingHistory, setLoadingHistory] = useState(true);
+
   useEffect(() => {
     if (!isPending && !session) {
       router.push("/login");
     }
   }, [session, isPending, router]);
 
+  useEffect(() => {
+    if (session?.user) {
+      fetch("/api/v1/resume/history")
+        .then(res => res.json())
+        .then(data => {
+          if (data.history) setHistory(data.history);
+          setLoadingHistory(false);
+        })
+        .catch(err => {
+          console.error("Failed to fetch history:", err);
+          setLoadingHistory(false);
+        });
+    }
+  }, [session]);
+
   const handleLogout = async () => {
     await signOut();
     router.push("/login");
   };
 
-  const recentGenerations = [
-    { id: 1, universe: "Batman", date: "2 hours ago", status: "completed", accent: "text-zinc-400" },
-    { id: 2, universe: "Cyberpunk", date: "5 hours ago", status: "completed", accent: "text-pink-500" },
-    { id: 3, universe: "Pirate", date: "1 day ago", status: "completed", accent: "text-amber-500" },
-  ];
+  const openHistoryItem = (item: any) => {
+    const data = {
+      original_resume: item.originalData,
+      transformed_resume: item.transformedData,
+      universe: item.universe
+    };
+    sessionStorage.setItem("multiverse_resume_data", JSON.stringify(data));
+    router.push(`/editor?universe=${encodeURIComponent(item.universe)}`);
+  };
 
   const displayName = session?.user?.name || (session?.user?.email ? session.user.email.split('@')[0] : "Traveler");
 
@@ -121,34 +143,46 @@ export default function DashboardPage() {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {recentGenerations.map((gen, i) => (
-              <motion.div
-                key={gen.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 + i * 0.1 }}
-                className="h-full"
-              >
-                <LiquidGlassCard className="h-full flex flex-col justify-between group cursor-pointer border border-white/10 hover:border-white/30">
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <span className={`text-xs font-semibold px-2 py-1 bg-white/5 rounded border border-white/10 uppercase tracking-wider ${gen.accent}`}>
-                        {gen.status}
-                      </span>
-                      <ExternalLink className="w-4 h-4 text-white/30 group-hover:text-white transition-colors" />
+            {loadingHistory ? (
+              <p className="text-white/50 col-span-3 text-center py-10">Syncing with timeline database...</p>
+            ) : history.length === 0 ? (
+              <p className="text-white/50 col-span-3 text-center py-10 border border-white/10 border-dashed rounded-2xl">
+                No past realities found. Initialize your core identity above to begin.
+              </p>
+            ) : (
+              history.map((gen, i) => (
+                <motion.div
+                  key={gen.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 + i * 0.1 }}
+                  className="h-full"
+                >
+                  <LiquidGlassCard 
+                    className="h-full flex flex-col justify-between group cursor-pointer border border-white/10 hover:border-primary/50"
+                  >
+                    <div onClick={() => openHistoryItem(gen)} className="h-full flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center justify-between mb-4">
+                          <span className={`text-xs font-semibold px-2 py-1 bg-white/5 rounded border border-white/10 uppercase tracking-wider text-green-400`}>
+                            archived
+                          </span>
+                          <ExternalLink className="w-4 h-4 text-white/30 group-hover:text-white transition-colors" />
+                        </div>
+                        <h3 className="text-2xl font-outfit font-bold mb-2">{gen.universe}</h3>
+                        <p className="text-sm text-white/50">{new Date(gen.createdAt).toLocaleDateString()}</p>
+                      </div>
+                      
+                      <div className="mt-6 pt-4 border-t border-white/10 flex justify-end">
+                        <span className="text-sm text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
+                          Revisit Reality <Sparkles className="w-3 h-3" />
+                        </span>
+                      </div>
                     </div>
-                    <h3 className="text-2xl font-outfit font-bold mb-2">{gen.universe}</h3>
-                    <p className="text-sm text-white/50">{gen.date}</p>
-                  </div>
-                  
-                  <div className="mt-6 pt-4 border-t border-white/10 flex justify-end">
-                    <span className="text-sm text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
-                      View Reality <Sparkles className="w-3 h-3" />
-                    </span>
-                  </div>
-                </LiquidGlassCard>
-              </motion.div>
-            ))}
+                  </LiquidGlassCard>
+                </motion.div>
+              ))
+            )}
           </div>
         </section>
       </main>
