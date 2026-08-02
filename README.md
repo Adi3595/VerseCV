@@ -8,7 +8,7 @@
 
 <img src="./apps/web/public/heading-experience.svg" alt="The VerseCV Experience" />
 
-VerseCV is not just a resume parser—it's an **AI-powered cinematic engine**. We take your mundane professional history and project it into infinite alternate realities using state-of-the-art Large Language Models via OpenRouter. 
+VerseCV is not just a resume parser—it's an **AI-powered cinematic engine**. We take your mundane professional history and project it into infinite alternate realities using state-of-the-art Large Language Models. 
 
 The application is built for maximum visual impact, utilizing a custom dark-mode glassmorphism aesthetic, advanced Framer Motion animations, and custom typography to make the experience feel truly otherworldly.
 
@@ -16,55 +16,56 @@ The application is built for maximum visual impact, utilizing a custom dark-mode
   <summary><strong>✨ Click to see the Features in detail!</strong></summary>
   <br/>
   
-  - 🎥 **Cinematic UI:** A stunning, animated, responsive interface built with Framer Motion and Tailwind CSS.
-  - 🧬 **Universal Origin Upload:** Upload your standard PDF resume. The system automatically parses your core identity and extracts your structured history without any manual data entry.
+  - 🎥 **Cinematic UI:** A stunning, animated, responsive interface built with Next.js 16, Framer Motion, and Tailwind CSS v4.
+  - 🧬 **Universal Origin Upload:** Upload your standard PDF resume. The Python FastAPI engine automatically parses your core identity and extracts your structured history without any manual data entry.
   - 🌀 **Infinite Realities:** Type in any universe (e.g., "Star Wars", "Cyberpunk 2077", "Victorian London") and watch as your skills are completely transformed to fit the lore, while keeping the core meaning of your achievements intact!
-  - ⚡ **Real-time Generation:** Watch as the timeline stabilizes and your alternate persona is dynamically typed out in front of you.
-  - 🔒 **Secure Auth:** Frictionless login using Better Auth (supports passkeys, social logins, and secure sessions).
-  - 🎨 **Dynamic Typography:** Custom Bitcount Prop Single font rendering powered by SVG-inlining for cross-platform compatibility.
+  - 💾 **Timeline History:** Every generated reality is securely saved to your personal Dashboard via a robust Neon PostgreSQL database, allowing you to revisit and favorite past generations.
+  - 🔗 **Public Share Links:** Instantly generate a public, distraction-free gallery link to share your cinematic resume with recruiters, friends, or the internet.
+  - 🖨️ **High-Res PDF Export:** Export your generated reality as a pixel-perfect, beautifully themed PDF document.
+  - 🔒 **Secure Auth:** Frictionless login using Better Auth via Neon.
 </details>
 
 <details>
   <summary><strong>🛠️ Click to reveal the Tech Stack</strong></summary>
   <br/>
 
-  VerseCV is built as a modern full-stack web application using a Turborepo monorepo architecture for extreme modularity.
+  VerseCV is built as a highly modular modern full-stack web application.
 
-  **Frontend:**
-  - Next.js 16 (App Router) + Turbopack
+  **Frontend (Next.js 16):**
+  - Next.js (App Router) + Turbopack
   - React 19
   - Tailwind CSS (v4)
   - Framer Motion (Cinematic Animations)
-  - Lucide React (Icons)
+  - HTML2Canvas-Pro & jsPDF (Client-side Export)
 
-  **Backend & AI:**
-  - Next.js Server Actions & API Routes
+  **Backend (FastAPI & Next.js APIs):**
+  - Python FastAPI (Advanced ML/AI heavy lifting)
   - OpenRouter API (Gemini / Claude / GPT)
-  - `pdf-parse` (v1.1.1 for robust server-side extraction)
-  - Better Auth (Authentication)
+  - Prisma ORM
+  - Neon Serverless PostgreSQL
 
-  **Tooling:**
-  - pnpm workspaces
-  - Turborepo
-  - TypeScript
+  **Tooling & Architecture:**
+  - pnpm workspaces & Turborepo
+  - TypeScript & Python
+  - Dockerized Backend Deployment
 </details>
 
 <br/>
 
 ## 🏗️ Architecture & Project Structure
 
-This project uses a highly modular **Turborepo** setup. This allows us to separate the frontend from the core utility libraries and AI wrappers, keeping the codebase extremely clean.
+This project uses a highly modular **Turborepo** setup, separating the frontend from the core utility libraries and Python AI backend.
 
 ```text
 MultiVerse-Resume/
 ├── apps/
-│   ├── web/               # The main Next.js 16 Frontend & API
-│   │   ├── src/app/       # App Router (Pages, Layouts, APIs)
-│   │   ├── src/components/# Reusable UI (Cinematic, Dashboard)
-│   │   └── public/        # Static assets, SVG banners, fonts
-│   └── api/               # (Optional) Python FastAPI backend for heavy ML
+│   ├── web/               # The main Next.js 16 Frontend, Auth, and APIs
+│   │   ├── src/app/       # App Router (Pages, Layouts, Prisma APIs)
+│   │   ├── src/components/# Reusable UI (Cinematic, Dashboard, Upload)
+│   │   └── prisma/        # Database Schema & Migrations
+│   └── api/               # The Python FastAPI backend (AI pipeline, PDF Extraction)
 ├── packages/
-│   ├── ai/                # Shared AI wrapper interfaces (OpenRouter)
+│   ├── ai/                # Shared AI wrapper interfaces
 │   ├── database/          # Shared database schemas and ORMs
 │   ├── types/             # Shared TypeScript interfaces
 │   └── ui/                # Shared UI component library
@@ -75,10 +76,10 @@ MultiVerse-Resume/
 
 ## 🧠 How the AI Pipeline Works
 
-1. **Extraction (`pdf-parse`)**: When you upload a resume on the Dashboard, the Next.js backend extracts raw text from the PDF using a lightweight, native NodeJS pipeline (`pdf-parse@1.1.1`).
-2. **Contextualization**: The raw text is wrapped in a heavily engineered system prompt instructing the AI to identify core skills, work history, and achievements.
-3. **Reality Distortion**: The user inputs a target "Universe" (e.g. *The Matrix*). The OpenRouter model translates the extracted data into the specific lore of that universe, generating structured JSON.
-4. **Cinematic Render**: The frontend receives the JSON and dynamically animates the new resume into view using Framer Motion, assigning custom CSS themes (`accent` and `theme` colors) generated by the AI to match the requested universe.
+1. **Extraction**: When you upload a resume on the Dashboard, the Python backend (`apps/api`) extracts raw text from the PDF robustly.
+2. **Contextualization**: The raw text is wrapped in a heavily engineered system prompt instructing the AI to identify core skills, work history, and achievements using OpenRouter models.
+3. **Reality Distortion**: The user inputs a target "Universe" (e.g. *The Matrix*). The AI translates the extracted data into the specific lore of that universe, generating structured JSON.
+4. **Cinematic Render & Save**: The frontend receives the JSON, seamlessly saves it to the Neon Postgres database (`ResumeHistory` table) via Prisma, and dynamically animates the new resume into view using Framer Motion.
 
 <br/>
 
@@ -99,18 +100,31 @@ pnpm install
 ```
 
 ### 3️⃣ Configure the Dimensions (Environment)
-Create a `.env` file in the root directory. You will need your OpenRouter API keys to power the reality generator:
+Create a `.env` file in the root directory and in `apps/web/`. You will need your API keys to power the engine:
+
 ```env
-# AI Provider
+# AI Provider (Backend)
 OPENROUTER_API_KEY=your_openrouter_api_key_here
 OPENROUTER_TEXT_MODEL=google/gemini-2.5-flash
 
-# Authentication (Better Auth config)
-BETTER_AUTH_SECRET=generate_a_random_secret_string
-NEXT_PUBLIC_APP_URL=http://localhost:3000
+# Database (Prisma / Neon)
+DATABASE_URL=postgresql://user:pass@host/db?sslmode=require
+
+# Authentication (Better Auth via Neon)
+NEON_AUTH_BASE_URL=your_neon_auth_url
+NEON_AUTH_COOKIE_SECRET=your_random_secret
+JWT_SECRET=your_jwt_secret
+NEXT_PUBLIC_NEON_AUTH_URL=your_neon_auth_url
+NEXT_PUBLIC_API_URL=http://localhost:8000 # Local Python API URL
 ```
 
-### 4️⃣ Ignite the Engine
+### 4️⃣ Generate the Database Client
+```bash
+pnpm run postinstall
+```
+
+### 5️⃣ Ignite the Engines
+Start the entire monorepo (both Next.js and FastAPI) using Turbo:
 ```bash
 pnpm dev
 ```
