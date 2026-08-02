@@ -37,6 +37,7 @@ function EditorContent() {
   
   const [data, setData] = useState<GenerateResponse | null>(null);
   const [isInitializing, setIsInitializing] = useState(true);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     // Read the generated data from sessionStorage
@@ -138,7 +139,8 @@ function EditorContent() {
     if (data?.history_id) {
       const shareUrl = `${window.location.origin}/share/${data.history_id}`;
       navigator.clipboard.writeText(shareUrl);
-      alert(`Public timeline link copied: ${shareUrl}`);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     } else {
       alert("This reality is not yet saved to the timeline. Please generate again.");
     }
@@ -167,8 +169,9 @@ function EditorContent() {
         </div>
 
         <div className="flex gap-3 no-print">
-          <button onClick={handleShare} className="p-2 text-white/70 hover:text-white bg-white/5 hover:bg-white/10 rounded-xl transition-all">
+          <button onClick={handleShare} className="flex items-center gap-2 px-4 py-2 text-white/70 hover:text-white bg-white/5 hover:bg-white/10 rounded-xl transition-all border border-white/5">
             <Share2 className="w-4 h-4" />
+            <span className="font-semibold">{copied ? "Copied!" : "Share"}</span>
           </button>
           <button onClick={handleExport} className="flex items-center gap-2 px-4 py-2 bg-accent text-accent-foreground font-semibold rounded-xl hover:bg-accent/90 transition-all">
             <Download className="w-4 h-4" />

@@ -3,9 +3,10 @@ import { notFound } from "next/navigation";
 import ShareClient from "./ShareClient";
 import { Metadata } from "next";
 
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
   const resume = await prisma.resumeHistory.findUnique({
-    where: { id: params.id }
+    where: { id }
   });
 
   if (!resume) {
@@ -19,9 +20,10 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
   };
 }
 
-export default async function SharedResumePage({ params }: { params: { id: string } }) {
+export default async function SharedResumePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const resume = await prisma.resumeHistory.findUnique({
-    where: { id: params.id }
+    where: { id }
   });
 
   if (!resume) {
