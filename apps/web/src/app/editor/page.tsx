@@ -24,6 +24,7 @@ interface GenerateResponse {
   original_resume: ResumeData;
   transformed_resume: ResumeData;
   universe: string;
+  history_id?: string;
 }
 
 const fallbackTheme = "bg-slate-950 text-slate-300 border-slate-800";
@@ -134,8 +135,13 @@ function EditorContent() {
   };
 
   const handleShare = () => {
-    navigator.clipboard.writeText(window.location.href);
-    alert("Timeline coordinates copied to clipboard!");
+    if (data?.history_id) {
+      const shareUrl = `${window.location.origin}/share/${data.history_id}`;
+      navigator.clipboard.writeText(shareUrl);
+      alert(`Public timeline link copied: ${shareUrl}`);
+    } else {
+      alert("This reality is not yet saved to the timeline. Please generate again.");
+    }
   };
 
   return (

@@ -62,12 +62,9 @@ export default function CoreIdentityUpload() {
 
       const data = await res.json();
       
-      // Store in session storage so the editor can read it
-      sessionStorage.setItem("multiverse_resume_data", JSON.stringify(data));
-      
-      // Save to History Database silently
+      // Save to History Database to get the history ID
       try {
-        await fetch("/api/v1/resume/history", {
+        const historyRes = await fetch("/api/v1/resume/history", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -76,9 +73,16 @@ export default function CoreIdentityUpload() {
             universe: data.universe
           })
         });
+        const historyData = await historyRes.json();
+        if (historyData.success && historyData.record) {
+          data.history_id = historyData.record.id;
+        }
       } catch (historyErr) {
         console.error("Failed to save history:", historyErr);
       }
+
+      // Store in session storage so the editor can read it
+      sessionStorage.setItem("multiverse_resume_data", JSON.stringify(data));
 
       router.push(`/editor?universe=${encodeURIComponent(targetUniverse.trim())}`);
     } catch (err) {
