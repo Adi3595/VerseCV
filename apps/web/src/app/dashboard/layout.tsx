@@ -23,7 +23,7 @@ export default function DashboardLayout({
   const displayName = session?.user?.name || (session?.user?.email ? session.user.email.split('@')[0] : "Traveler");
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col relative z-10">
+    <div className="min-h-screen bg-transparent text-foreground flex flex-col relative z-10">
       {/* Floating Header */}
       <header className="sticky top-6 z-50 w-full px-6 flex justify-center">
         <div className="w-full max-w-5xl flex items-center justify-between px-6 py-4 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_0_30px_rgba(255,255,255,0.05)]">
